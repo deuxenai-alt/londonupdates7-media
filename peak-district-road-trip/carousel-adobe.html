@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Peak District Road Trip — Instagram Carousel</title>
+<meta name="hz:slide-selector" content=".slide" />
+<meta name="hz:canvas-width" content="1080" />
+<meta name="hz:canvas-height" content="1080" />
+<link rel="stylesheet" href="https://use.typekit.net/lvs0scd.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{display:flex;flex-direction:column;align-items:center;gap:36px;background:#ded7cb;padding:36px}
+
+  .slide{
+    position:relative;width:1080px;height:1080px;overflow:hidden;
+    background:#f4efe4;color:#241f2b;
+    font-family:"router",sans-serif;
+  }
+  /* role styles (consistent across slides) */
+  .kicker{font-family:"monsal-gothic",sans-serif;text-transform:uppercase;letter-spacing:.32em;font-size:26px;font-weight:400}
+  .display{font-family:"centrifuge",sans-serif;font-weight:700;line-height:.94;letter-spacing:.5px}
+  .body{font-family:"router",sans-serif;font-weight:500;line-height:1.5}
+  .label{font-family:"monsal-gothic",sans-serif;text-transform:uppercase;letter-spacing:.16em}
+
+  /* palette blocks */
+  .dark{background:#2a1c42;color:#f4efe4}
+  .heather{background:#6a4c93;color:#fff}
+  .moss{background:#2f6b4f;color:#fff}
+
+  /* shared mountain motif */
+  .mtn{position:absolute;left:0;right:0;bottom:0;width:1080px;display:block}
+
+  /* ---- SLIDE 1 : COVER ---- */
+  .s1{background:linear-gradient(165deg,#2a1c42 0%,#5b3f86 55%,#2f6b4f 130%);color:#f4efe4}
+  .s1 .inner{position:absolute;left:80px;top:110px;right:80px}
+  .s1 .kicker{color:#d8c7f2}
+  .s1 .display{font-size:186px;margin:26px 0 0}
+  .s1 .sub{font-family:"monsal-gothic",sans-serif;font-size:40px;letter-spacing:.06em;margin-top:24px;color:#f0e9dd}
+  .s1 .badges{position:absolute;left:80px;bottom:210px;display:flex;flex-wrap:wrap;gap:14px}
+  .s1 .badge{border:2px solid rgba(255,255,255,.4);border-radius:60px;padding:14px 26px;font-family:"router",sans-serif;font-weight:500;font-size:27px}
+  .s1 .swipe{position:absolute;right:80px;bottom:70px;font-family:"monsal-gothic",sans-serif;letter-spacing:.2em;font-size:30px;color:#f4efe4}
+  .s1 .handle{position:absolute;left:80px;bottom:78px;font-family:"monsal-gothic",sans-serif;letter-spacing:.14em;font-size:28px;color:#cbb8ee}
+
+  /* ---- generic content slide ---- */
+  .pad{position:absolute;left:80px;top:96px;right:80px}
+  .num{position:absolute;right:74px;top:70px;font-family:"centrifuge",sans-serif;font-weight:700;font-size:40px;opacity:.5}
+  .head-kicker{color:#6a4c93}
+  .slide.dark .head-kicker{color:#c8b3ef}
+  .title{font-family:"centrifuge",sans-serif;font-weight:700;font-size:96px;line-height:.98;margin:18px 0 8px}
+
+  /* stat tiles (slide 2) */
+  .stats{position:absolute;left:80px;right:80px;top:430px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  .tile{background:#fff;border-radius:28px;padding:44px 40px;box-shadow:0 14px 30px rgba(42,28,66,.12)}
+  .tile .n{font-family:"centrifuge",sans-serif;font-weight:700;font-size:92px;color:#4a336b;line-height:.9}
+  .tile .t{font-family:"monsal-gothic",sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:28px;color:#6b6474;margin-top:14px}
+
+  /* spot list (slide 3) */
+  .spots{position:absolute;left:80px;right:80px;top:420px;display:flex;flex-direction:column;gap:22px}
+  .spot{display:flex;align-items:center;gap:28px;background:#fff;border-radius:22px;padding:26px 34px;box-shadow:0 10px 22px rgba(42,28,66,.09)}
+  .spot .ic{width:70px;height:70px;flex:0 0 70px;border-radius:18px;background:#efe7f7;display:flex;align-items:center;justify-content:center;font-size:38px}
+  .spot .nm{font-family:"centrifuge",sans-serif;font-weight:700;font-size:40px}
+  .spot .ds{font-family:"router",sans-serif;font-weight:500;font-size:26px;color:#6b6474;margin-top:2px}
+
+  /* season chips (slide 4) */
+  .seasons{position:absolute;left:80px;right:80px;top:430px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .season{border-radius:26px;padding:38px;color:#fff}
+  .season .mo{font-family:"monsal-gothic",sans-serif;letter-spacing:.14em;font-size:26px;opacity:.9}
+  .season .sn{font-family:"centrifuge",sans-serif;font-weight:700;font-size:52px;margin:6px 0 14px}
+  .season .hi{font-family:"router",sans-serif;font-weight:500;font-size:28px;line-height:1.35}
+  .sp{background:#3f8c67}.su{background:#6a4c93}.au{background:#b0632c}.wi{background:#3a5b78}
+
+  /* two-column list (slide 5) */
+  .cols{position:absolute;left:80px;right:80px;top:410px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  .col{background:#fff;border-radius:26px;padding:40px 36px;box-shadow:0 12px 26px rgba(42,28,66,.1)}
+  .col h3{font-family:"centrifuge",sans-serif;font-weight:700;font-size:46px;margin-bottom:22px}
+  .col.free h3{color:#1f7a4d}.col.cheap h3{color:#8a6400}
+  .col li{list-style:none;font-family:"router",sans-serif;font-weight:500;font-size:29px;line-height:1.3;padding:12px 0;border-bottom:2px solid #efeadf}
+  .col li:last-child{border-bottom:0}
+  .col li b{font-family:"monsal-gothic",sans-serif;letter-spacing:.02em}
+
+  /* food (slide 6) */
+  .food-hero{position:absolute;left:80px;right:80px;top:400px;background:#2f6b4f;color:#fff;border-radius:28px;padding:44px}
+  .food-hero .tag{font-family:"monsal-gothic",sans-serif;letter-spacing:.16em;text-transform:uppercase;font-size:24px;color:#bfe6cf}
+  .food-hero .nm{font-family:"centrifuge",sans-serif;font-weight:700;font-size:60px;margin:8px 0 12px}
+  .food-hero .ds{font-family:"router",sans-serif;font-weight:500;font-size:30px;line-height:1.4}
+  .food-list{position:absolute;left:80px;right:80px;top:720px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .fi{background:#fff;border-radius:20px;padding:26px 30px;box-shadow:0 10px 20px rgba(42,28,66,.08)}
+  .fi .nm{font-family:"centrifuge",sans-serif;font-weight:700;font-size:34px}
+  .fi .ds{font-family:"router",sans-serif;font-weight:500;font-size:24px;color:#6b6474;margin-top:4px}
+
+  /* budget (slide 7) */
+  .bud{position:absolute;left:80px;right:80px;top:410px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  .bcard{border-radius:28px;padding:44px 40px;color:#fff}
+  .bcard.day{background:linear-gradient(160deg,#6a4c93,#4a336b)}
+  .bcard.wknd{background:linear-gradient(160deg,#2f6b4f,#1f4d38)}
+  .bcard .mo{font-family:"monsal-gothic",sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:26px;opacity:.9}
+  .bcard .pp{font-family:"centrifuge",sans-serif;font-weight:700;font-size:120px;line-height:.85;margin:10px 0 4px}
+  .bcard .pp small{font-size:44px}
+  .bcard .tot{font-family:"router",sans-serif;font-weight:500;font-size:28px;opacity:.9;margin-bottom:20px}
+  .bcard li{list-style:none;font-family:"router",sans-serif;font-weight:500;font-size:26px;padding:8px 0;border-top:1.5px solid rgba(255,255,255,.25)}
+  .bud-note{position:absolute;left:80px;right:80px;bottom:96px;font-family:"router",sans-serif;font-weight:500;font-size:26px;color:#6b6474;text-align:center}
+
+  /* CTA (slide 8) */
+  .s8{background:linear-gradient(200deg,#2f6b4f 0%,#2a1c42 90%);color:#f4efe4}
+  .s8 .inner{position:absolute;left:80px;right:80px;top:150px;text-align:center}
+  .s8 .display{font-size:120px;margin:20px 0}
+  .s8 .body{font-size:34px;color:#e8e0d3;max-width:840px;margin:0 auto}
+  .s8 .cta{margin-top:56px;display:inline-block;background:#e0a500;color:#2a1c42;font-family:"monsal-gothic",sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:34px;padding:26px 54px;border-radius:70px}
+  .s8 .handle{position:absolute;left:0;right:0;bottom:170px;text-align:center;font-family:"centrifuge",sans-serif;font-weight:700;font-size:52px;color:#fff}
+  .s8 .small{position:absolute;left:0;right:0;bottom:110px;text-align:center;font-family:"monsal-gothic",sans-serif;letter-spacing:.1em;font-size:26px;color:#cbb8ee}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — COVER -->
+<div class="slide s1" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="inner">
+    <div class="kicker">London Updates · Weekend Escapes</div>
+    <div class="display">PEAK<br>DISTRICT</div>
+    <div class="sub">6 Mates · One Car · One Epic Weekend</div>
+  </div>
+  <div class="badges">
+    <div class="badge">🚗 From ~£50pp</div>
+    <div class="badge">🅿️ Free parking</div>
+    <div class="badge">📍 24 spots mapped</div>
+  </div>
+  <div class="handle">@londonupdates7</div>
+  <div class="swipe">SWIPE →</div>
+  <svg class="mtn" viewBox="0 0 1080 200" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#241a38" opacity="0.6" d="M0,200 L0,120 L180,60 L360,130 L520,50 L700,120 L860,40 L1080,110 L1080,200 Z"/>
+    <path fill="#1c1330" d="M0,200 L0,160 L200,110 L400,165 L560,100 L760,160 L940,95 L1080,150 L1080,200 Z"/>
+  </svg>
+</div>
+
+<!-- SLIDE 2 — SNAPSHOT -->
+<div class="slide" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="num">01</div>
+  <div class="pad">
+    <div class="kicker head-kicker">The trip in numbers</div>
+    <div class="title">England's cheapest<br>big adventure</div>
+    <div class="body" style="font-size:32px;color:#6b6474;margin-top:14px;max-width:820px">Pile six into one car, split the fuel, and spend a weekend on gritstone edges and mirror-still reservoirs — where nearly everything is free.</div>
+  </div>
+  <div class="stats">
+    <div class="tile"><div class="n">172<small style="font-size:38px"> mi</small></div><div class="t">London → Peak</div></div>
+    <div class="tile"><div class="n">~3<small style="font-size:38px"> hrs</small></div><div class="t">Drive each way</div></div>
+    <div class="tile"><div class="n">13</div><div class="t">Free car parks</div></div>
+    <div class="tile"><div class="n">£0</div><div class="t">Most attractions</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 3 — BEST SPOTS -->
+<div class="slide" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="num">02</div>
+  <div class="pad">
+    <div class="kicker head-kicker">Best places to visit</div>
+    <div class="title">The must-do spots</div>
+  </div>
+  <div class="spots">
+    <div class="spot"><div class="ic">⛰️</div><div><div class="nm">Mam Tor &amp; Great Ridge</div><div class="ds">Paved path, 517m summit, 360° views · free parking</div></div></div>
+    <div class="spot"><div class="ic">🏰</div><div><div class="nm">Castleton &amp; Peveril Castle</div><div class="ds">Stone village, caves, cafés &amp; a Norman ruin</div></div></div>
+    <div class="spot"><div class="ic">💧</div><div><div class="nm">Ladybower &amp; Derwent Dam</div><div class="ds">Flat reservoir walks · the Dambusters site</div></div></div>
+    <div class="spot"><div class="ic">🧗</div><div><div class="nm">Stanage Edge</div><div class="ds">4-mile gritstone edge · unreal sunsets</div></div></div>
+    <div class="spot"><div class="ic">🪨</div><div><div class="nm">Dovedale Stepping Stones</div><div class="ds">River crossing + Thorpe Cloud · go early</div></div></div>
+    <div class="spot"><div class="ic">🧁</div><div><div class="nm">Bakewell &amp; Monsal Head</div><div class="ds">Puddings, markets &amp; the classic viaduct view</div></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 4 — SEASONAL -->
+<div class="slide" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="num">03</div>
+  <div class="pad">
+    <div class="kicker head-kicker">When to go</div>
+    <div class="title">Seasonal musts</div>
+    <div class="body" style="font-size:30px;color:#6b6474;margin-top:12px">⭐ = the “definitely go now” highlight</div>
+  </div>
+  <div class="seasons">
+    <div class="season sp"><div class="mo">MAR – MAY</div><div class="sn">Spring</div><div class="hi">⭐ Bluebells at Lathkill Dale · daffodils along Dovedale</div></div>
+    <div class="season su"><div class="mo">JUN – SEP</div><div class="sn">Summer</div><div class="hi">⭐ Purple heather on the moors (mid-Aug) · long hikes</div></div>
+    <div class="season au"><div class="mo">OCT – NOV</div><div class="sn">Autumn</div><div class="hi">⭐ Golden woodlands · misty dales · quiet trails</div></div>
+    <div class="season wi"><div class="mo">DEC – FEB</div><div class="sn">Winter</div><div class="hi">Frosted moors · Chatsworth Christmas market</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 5 — PARKING -->
+<div class="slide" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="num">04</div>
+  <div class="pad">
+    <div class="kicker head-kicker">Keep the wallet shut</div>
+    <div class="title">Free &amp; cheap parking</div>
+  </div>
+  <div class="cols">
+    <div class="col free">
+      <h3>🟢 Free</h3>
+      <ul>
+        <li><b>Mam Tor roadside</b> — laybys on Old Mam Tor Rd</li>
+        <li><b>Hurst Clough</b> — ~15 spaces, Upper Derwent</li>
+        <li><b>Upperdale</b> — ~10 spaces, Monsal Trail</li>
+        <li><b>A6013 laybys</b> — for Ladybower walks</li>
+      </ul>
+    </div>
+    <div class="col cheap">
+      <h3>🟡 Cheap</h3>
+      <ul>
+        <li><b>Fairholmes</b> — hub for Ladybower + café</li>
+        <li><b>Bakewell Ag. Centre</b> — big &amp; central</li>
+        <li><b>Hook's Car</b> — closest to Stanage Edge</li>
+        <li><b>Dovedale NT</b> — free for NT members</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 — FOOD -->
+<div class="slide" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="num">05</div>
+  <div class="pad">
+    <div class="kicker head-kicker">Fuel the crew</div>
+    <div class="title">Cheap eats &amp; pubs</div>
+  </div>
+  <div class="food-hero">
+    <div class="tag">Budget legend</div>
+    <div class="nm">Grindleford Station Café</div>
+    <div class="ds">Cult cheap-eats institution by the railway tunnel — enormous fry-ups &amp; chip butties. Walker-approved.</div>
+  </div>
+  <div class="food-list">
+    <div class="fi"><div class="nm">Three Roofs, Castleton</div><div class="ds">Cream teas &amp; cheap lunches</div></div>
+    <div class="fi"><div class="nm">The Old Nag's Head, Edale</div><div class="ds">Hearty pub grub &amp; ale</div></div>
+    <div class="fi"><div class="nm">Bakewell Pudding Shop</div><div class="ds">The original sweet treat</div></div>
+    <div class="fi"><div class="nm">Picnic + Co-op run</div><div class="ds">The cheapest option of all</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 7 — BUDGET -->
+<div class="slide" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="num">06</div>
+  <div class="pad">
+    <div class="kicker head-kicker">The numbers · 6 sharing</div>
+    <div class="title">What it costs</div>
+  </div>
+  <div class="bud">
+    <div class="bcard day">
+      <div class="mo">🌅 Day trip</div>
+      <div class="pp">£50<small>pp</small></div>
+      <div class="tot">≈ £292 for the group</div>
+      <li>Fuel + parking £94</li>
+      <li>Food (café + pub) £120</li>
+      <li>1 cavern tour £78</li>
+    </div>
+    <div class="bcard wknd">
+      <div class="mo">🏕️ Weekend · 1 night</div>
+      <div class="pp">£136<small>pp</small></div>
+      <div class="tot">≈ £817 for the group</div>
+      <li>Fuel + parking £105</li>
+      <li>Hostel/bunkhouse £210</li>
+      <li>Food 2 days £384</li>
+    </div>
+  </div>
+  <div class="bud-note">💷 July 2026 prices · petrol ~£1.52/L · biggest saver = pack picnics &amp; use free parking</div>
+</div>
+
+<!-- SLIDE 8 — CTA -->
+<div class="slide s8" data-canvas-width="1080" data-canvas-height="1080">
+  <div class="inner">
+    <div class="kicker" style="color:#bfe6cf">Save this for your crew</div>
+    <div class="display">READY,<br>SET, GO</div>
+    <div class="body">Full interactive map with every spot, free parking pin &amp; one-tap directions is in our guide. Tag the 5 mates you're dragging along. 🚗💨</div>
+    <div class="cta">Save + Share →</div>
+  </div>
+  <div class="handle">@londonupdates7</div>
+  <div class="small">Interactive map + guide in bio</div>
+  <svg class="mtn" viewBox="0 0 1080 160" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#20142e" opacity="0.7" d="M0,160 L0,90 L200,40 L420,100 L620,30 L820,95 L1080,45 L1080,160 Z"/>
+  </svg>
+</div>
+
+</body>
+</html>
